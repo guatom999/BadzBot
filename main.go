@@ -1,11 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
-
 	"github.com/guatom999/BadzBot/configs"
 	"github.com/guatom999/BadzBot/modules/server"
 )
@@ -15,21 +10,21 @@ func main() {
 
 	server.NewDiscordServer(cfg).Start()
 
-	resp, err := http.Get("https://catfact.ninja/fact")
+	// resp, err := http.Get("https://catfact.ninja/fact")
 
-	if err != nil {
-		log.Fatalln(err)
-	}
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
 
-	//We Read the response body on the line below.
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	_ = body
-	//Convert the body to type string
-	sb := string(body)
-	fmt.Println(sb)
+	// //We Read the response body on the line below.
+	// body, err := ioutil.ReadAll(resp.Body)
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+	// _ = body
+	// //Convert the body to type string
+	// sb := string(body)
+	// fmt.Println(sb)
 }
 
 // func testRequest() {
