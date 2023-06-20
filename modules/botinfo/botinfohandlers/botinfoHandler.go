@@ -7,6 +7,7 @@ import (
 
 type IBotinfoHandler interface {
 	Help(s *discordgo.Session, i *discordgo.InteractionCreate)
+	Test(s *discordgo.Session, i *discordgo.InteractionCreate)
 }
 
 type botinfohandler struct {
@@ -31,6 +32,18 @@ func (h *botinfohandler) Help(s *discordgo.Session, i *discordgo.InteractionCrea
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
 			Content: h.botinfoUsecase.Feature(messageContent),
+		},
+	})
+}
+
+func (h *botinfohandler) Test(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	command := i.ApplicationCommandData()
+	messageContent := command.Options[0].StringValue()
+
+	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseChannelMessageWithSource,
+		Data: &discordgo.InteractionResponseData{
+			Content: h.botinfoUsecase.JetTest(messageContent),
 		},
 	})
 }

@@ -6,6 +6,35 @@ import (
 	"github.com/guatom999/BadzBot/modules/botinfo/botinfohandlers"
 )
 
+var (
+	commands = []*discordgo.ApplicationCommand{
+		{
+			Name:        "help",
+			Description: "Help Bot Menu",
+			Options: []*discordgo.ApplicationCommandOption{
+				{
+					Name:        "feature",
+					Description: "Test Bot",
+					Type:        discordgo.ApplicationCommandOptionString,
+				},
+			},
+		},
+		{
+			Name:        "response",
+			Description: "Test Response",
+			Options: []*discordgo.ApplicationCommandOption{
+				{
+					Name:        "text",
+					Description: "Test Feature 2",
+					Type:        discordgo.ApplicationCommandOptionString,
+				},
+			},
+		},
+	}
+
+	// _ = commands
+)
+
 type IBotinfoModule interface {
 	Init()
 	Handler() botinfohandlers.IBotinfoHandler
@@ -32,19 +61,35 @@ func (m *module) BotinfoModule() IBotinfoModule {
 
 func (b *botInfoModule) Init() {
 
-	b.module.commands = append(b.module.commands, &discordgo.ApplicationCommand{
-		Name:        "help",
-		Description: "Help Bot Menu",
-		Options: []*discordgo.ApplicationCommandOption{
-			{
-				Name:        "feature",
-				Description: "Test Bot",
-				Type:        discordgo.ApplicationCommandOptionString,
-			},
-		},
-	})
+	// registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
+
+	// b.module.commands = append(b.module.commands, &discordgo.ApplicationCommand{
+	// 	Name:        "help",
+	// 	Description: "Help Bot Menu",
+	// 	Options: []*discordgo.ApplicationCommandOption{
+	// 		{
+	// 			Name:        "feature",
+	// 			Description: "Test Bot",
+	// 			Type:        discordgo.ApplicationCommandOptionString,
+	// 		},
+	// 	},
+	// }, &discordgo.ApplicationCommand{
+	// 	Name:        "response",
+	// 	Description: "Response Bot Test",
+	// 	Options: []*discordgo.ApplicationCommandOption{
+	// 		{
+	// 			Name:        "feature",
+	// 			Description: "Test Response",
+	// 			Type:        discordgo.ApplicationCommandOptionString,
+	// 		},
+	// 	},
+	// })
+
+	b.module.commands = commands
 
 	b.commandHandler["help"] = b.hanlder.Help
+	b.commandHandler["response"] = b.hanlder.Test
+
 }
 
 func (b *botInfoModule) Handler() botinfohandlers.IBotinfoHandler {

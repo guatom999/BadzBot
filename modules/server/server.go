@@ -2,6 +2,7 @@ package server
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -53,6 +54,8 @@ func (s *discordServer) Start() {
 
 	module := ModuleInit(s)
 	module.BotinfoModule().Init()
+
+	fmt.Println(len(s.commands))
 
 	log.Println("Adding commands...")
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(s.commands))

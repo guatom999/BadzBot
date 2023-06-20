@@ -8,6 +8,7 @@ import (
 func main() {
 	cfg := configs.NewConfig("./.env")
 
+	// _ = cfg
 	server.NewDiscordServer(cfg).Start()
 
 	// resp, err := http.Get("https://catfact.ninja/fact")
