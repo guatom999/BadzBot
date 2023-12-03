@@ -30,6 +30,17 @@ var (
 				},
 			},
 		},
+		{
+			Name:        "getfollower",
+			Description: "Get Account FollwerCount",
+			Options: []*discordgo.ApplicationCommandOption{
+				{
+					Name:        "query",
+					Description: "ig url",
+					Type:        discordgo.ApplicationCommandOptionString,
+				},
+			},
+		},
 	}
 
 	// _ = commands
@@ -89,6 +100,7 @@ func (b *botInfoModule) Init() {
 
 	b.commandHandler["help"] = b.hanlder.Help
 	b.commandHandler["response"] = b.hanlder.Test
+	b.commandHandler["getfollower"] = b.hanlder.GetFollower
 
 }
 

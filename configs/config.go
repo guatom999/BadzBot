@@ -8,10 +8,12 @@ import (
 
 type IConfig interface {
 	App() IAppConfig
+	Ig() IIgConfig
 }
 
 type config struct {
 	app *app
+	ig  *ig
 }
 
 func NewConfig(path string) IConfig {
@@ -22,6 +24,10 @@ func NewConfig(path string) IConfig {
 	return &config{
 		app: &app{
 			token: envMap["APP_TOKEN"],
+		},
+		ig: &ig{
+			username: envMap["IG_USERNAME"],
+			password: envMap["IG_PASSWORD"],
 		},
 	}
 }
@@ -40,4 +46,25 @@ func (c config) App() IAppConfig {
 
 func (a app) GetToken() string {
 	return a.token
+}
+
+type IIgConfig interface {
+	GetIgUserName() string
+	GetIgPassword() string
+}
+type ig struct {
+	username string
+	password string
+}
+
+func (c *config) Ig() IIgConfig {
+	return c.ig
+}
+
+func (i *ig) GetIgUserName() string {
+	return i.username
+}
+
+func (i *ig) GetIgPassword() string {
+	return i.password
 }
