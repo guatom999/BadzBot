@@ -38,3 +38,13 @@ vendor
 *.pem
 apikey.txt
 *.txt
+
+.git
+.gitignore
+LICENSE
+README.md
+.air*
+*_test.go
+/sometest
+/screenshots
+/build
