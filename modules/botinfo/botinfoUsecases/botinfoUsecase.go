@@ -2,8 +2,8 @@ package botinfoUsecases
 
 import (
 	"fmt"
-	import "github.com/gocolly/colly"
 
+	"github.com/guatom999/BadzBot/pkg/scrapper"
 )
 
 type IBotinfoUsecase interface {
@@ -34,7 +34,7 @@ func (u *botintoUsecase) JetTest(message string) string {
 
 func (u *botintoUsecase) GetFollower(target string) string {
 
-	if err := scrapper.GetFollower(target); err != nil {
+	if err := scrapper.Scrapper(target); err != nil {
 		return ""
 	}
 	return "1"

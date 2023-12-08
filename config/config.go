@@ -17,7 +17,8 @@ type Config struct {
 }
 
 type App struct {
-	Token string
+	Token  string
+	AppUrl string
 }
 
 type Ig struct {
@@ -37,7 +38,8 @@ func NewConfig(path string) Config {
 
 	return Config{
 		App: App{
-			Token: os.Getenv("APP_TOKEN"),
+			Token:  os.Getenv("APP_TOKEN"),
+			AppUrl: os.Getenv("APP_URL"),
 		},
 		Ig: Ig{
 			Username: os.Getenv("IG_USERNAME"),
