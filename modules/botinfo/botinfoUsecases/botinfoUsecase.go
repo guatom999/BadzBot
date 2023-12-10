@@ -9,7 +9,7 @@ import (
 type IBotinfoUsecase interface {
 	Feature(message string) string
 	JetTest(message string) string
-	GetFollower(target string) string
+	GetSharePrice(target string) string
 }
 
 type botintoUsecase struct {
@@ -32,10 +32,14 @@ func (u *botintoUsecase) JetTest(message string) string {
 	return fmt.Sprintf("`Pen Kuay Rai: %v`", message)
 }
 
-func (u *botintoUsecase) GetFollower(target string) string {
+func (u *botintoUsecase) GetSharePrice(target string) string {
 
-	if err := scrapper.Scrapper(target); err != nil {
+	price, err := scrapper.Scrapper(target)
+	if err != nil {
 		return ""
+
 	}
-	return "1"
+
+	return price
+
 }

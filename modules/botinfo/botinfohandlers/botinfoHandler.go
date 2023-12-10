@@ -53,10 +53,14 @@ func (h *botinfohandler) GetFollower(s *discordgo.Session, i *discordgo.Interact
 	command := i.ApplicationCommandData()
 	messageContent := command.Options[0].StringValue()
 
+	if messageContent == "" {
+		s.InteractionResponse()
+	}
+
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
-			Content: h.botinfoUsecase.GetFollower(messageContent),
+			Content: h.botinfoUsecase.GetSharePrice(messageContent),
 		},
 	})
 }
