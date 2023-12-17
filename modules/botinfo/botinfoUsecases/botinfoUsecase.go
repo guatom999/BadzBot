@@ -1,45 +1,55 @@
 package botinfoUsecases
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/guatom999/BadzBot/pkg/scrapper"
+	"github.com/guatom999/BadzBot/modules/botinfo"
+	"github.com/guatom999/BadzBot/modules/botinfo/botinfoRepositories"
+	sharePb "github.com/guatom999/BadzBot/modules/sharePricePb"
 )
 
 type IBotinfoUsecase interface {
 	Feature(message string) string
 	JetTest(message string) string
-	GetSharePrice(target string) string
+	GetSharePrice(pctx context.Context, target string) (*botinfo.BotInfoSharePriceRes, error)
 }
 
-type botintoUsecase struct {
+type botinfoUsecase struct {
+	botinfoRepo botinfoRepositories.IBotRepositoryService
 }
 
 func NewBotinfoUsecase() IBotinfoUsecase {
-	return &botintoUsecase{}
+	return &botinfoUsecase{}
 }
 
-func (u *botintoUsecase) Feature(message string) string {
+func (u *botinfoUsecase) Feature(message string) string {
 	return fmt.Sprintf("`Test Said: %v`", message)
 }
 
-func (u *botintoUsecase) Forecast() string {
+func (u *botinfoUsecase) Forecast() string {
 	// return fmt.Sprintf("`not avaliable now i sus: %v`", message)
 	return fmt.Sprintln("`not avaliable right now`")
 }
 
-func (u *botintoUsecase) JetTest(message string) string {
+func (u *botinfoUsecase) JetTest(message string) string {
 	return fmt.Sprintf("`Pen Kuay Rai: %v`", message)
 }
 
-func (u *botintoUsecase) GetSharePrice(target string) string {
+func (u *botinfoUsecase) GetSharePrice(pctx context.Context, target string) (*botinfo.BotInfoSharePriceRes, error) {
 
-	price, err := scrapper.Scrapper(target)
+	shareResult, err := u.botinfoRepo.GetSharePrice(pctx, &sharePb.SharePriceReq{
+		ShareSymbol: target,
+	})
 	if err != nil {
-		return ""
-
+		return nil, err
 	}
 
-	return price
+	share := new(botinfo.BotInfoSharePriceRes)
+	share = &botinfo.BotInfoSharePriceRes{
+		Name:  shareResult.Name,
+		Price: share.Price,
+	}
 
+	return share, nil
 }

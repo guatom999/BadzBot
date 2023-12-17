@@ -100,7 +100,7 @@ func (b *botInfoModule) Init() {
 
 	b.commandHandler["help"] = b.hanlder.Help
 	b.commandHandler["response"] = b.hanlder.Test
-	b.commandHandler["getfollower"] = b.hanlder.GetFollower
+	// b.commandHandler["getfollower"] = b.hanlder.GetFollower
 
 }
 

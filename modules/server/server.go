@@ -68,6 +68,8 @@ func (s *HttpServer) Start(pctx context.Context) {
 
 	go s.gracefulShutdown(pctx, close)
 
+	s.sharePriceServer()
+
 	s.AppListening()
 
 }

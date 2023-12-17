@@ -1,6 +1,8 @@
 package botinfohandlers
 
 import (
+	"context"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/guatom999/BadzBot/modules/botinfo/botinfoUsecases"
 )
@@ -8,7 +10,8 @@ import (
 type IBotinfoHandler interface {
 	Help(s *discordgo.Session, i *discordgo.InteractionCreate)
 	Test(s *discordgo.Session, i *discordgo.InteractionCreate)
-	GetFollower(s *discordgo.Session, i *discordgo.InteractionCreate)
+	// GetSharePrice(s *discordgo.Session, i *discordgo.InteractionCreate)
+	// GetFollower(s *discordgo.Session, i *discordgo.InteractionCreate)
 }
 
 type botinfohandler struct {
@@ -49,18 +52,43 @@ func (h *botinfohandler) Test(s *discordgo.Session, i *discordgo.InteractionCrea
 	})
 }
 
-func (h *botinfohandler) GetFollower(s *discordgo.Session, i *discordgo.InteractionCreate) {
+func (h *botinfohandler) GetSharePrice(s *discordgo.Session, i *discordgo.InteractionCreate) {
+
+	ctx := context.Background()
+
 	command := i.ApplicationCommandData()
 	messageContent := command.Options[0].StringValue()
 
-	if messageContent == "" {
-		s.InteractionResponse()
+	result, err := h.botinfoUsecase.GetSharePrice(ctx, messageContent)
+	if err != nil {
+		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+			Type: discordgo.InteractionResponseChannelMessageWithSource,
+			Data: &discordgo.InteractionResponseData{
+				Content: err.Error(),
+			},
+		})
 	}
 
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
-			Content: h.botinfoUsecase.GetSharePrice(messageContent),
+			Content: result.Name,
 		},
 	})
 }
+
+// func (h *botinfohandler) GetFollower(s *discordgo.Session, i *discordgo.InteractionCreate) {
+// 	command := i.ApplicationCommandData()
+// 	messageContent := command.Options[0].StringValue()
+
+// 	if messageContent == "" {
+// 		s.ChannelMessageSend(m.ChannelID, "Pong!")
+// 	}
+
+// 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+// 		Type: discordgo.InteractionResponseChannelMessageWithSource,
+// 		Data: &discordgo.InteractionResponseData{
+// 			Content: h.botinfoUsecase.GetSharePrice(messageContent),
+// 		},
+// 	})
+// }
