@@ -14,5 +14,6 @@ func (s *HttpServer) sharePriceServer() {
 	router := s.app.Group("/share_price_test")
 
 	router.GET("/test", sharePriceHandler.Test)
+	router.GET("/shareprice/:sharesymbol", sharePriceHandler.SharePrice)
 
 }

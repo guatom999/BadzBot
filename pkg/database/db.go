@@ -12,8 +12,8 @@ import (
 )
 
 func DbConnect(pctx context.Context, cfg *config.Config) *mongo.Client {
-	ctx, cancel := context.WithTimeout(pctx, time.Second*15)
-	defer cancel()
+	ctx, _ := context.WithTimeout(pctx, time.Second*15)
+	// defer cancel()
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(cfg.Db.Url))
 	if err != nil {

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/guatom999/BadzBot/modules/botinfo"
 	"github.com/guatom999/BadzBot/modules/botinfo/botinfoRepositories"
 	sharePb "github.com/guatom999/BadzBot/modules/sharePricePb"
 )
@@ -12,15 +11,15 @@ import (
 type IBotinfoUsecase interface {
 	Feature(message string) string
 	JetTest(message string) string
-	GetSharePrice(pctx context.Context, target string) (*botinfo.BotInfoSharePriceRes, error)
+	GetSharePrice(pctx context.Context, target string) (*sharePb.SharePriceRes, error)
 }
 
 type botinfoUsecase struct {
 	botinfoRepo botinfoRepositories.IBotRepositoryService
 }
 
-func NewBotinfoUsecase() IBotinfoUsecase {
-	return &botinfoUsecase{}
+func NewBotinfoUsecase(botinfoRepo botinfoRepositories.IBotRepositoryService) IBotinfoUsecase {
+	return &botinfoUsecase{botinfoRepo: botinfoRepo}
 }
 
 func (u *botinfoUsecase) Feature(message string) string {
@@ -36,20 +35,12 @@ func (u *botinfoUsecase) JetTest(message string) string {
 	return fmt.Sprintf("`Pen Kuay Rai: %v`", message)
 }
 
-func (u *botinfoUsecase) GetSharePrice(pctx context.Context, target string) (*botinfo.BotInfoSharePriceRes, error) {
+func (u *botinfoUsecase) GetSharePrice(pctx context.Context, target string) (*sharePb.SharePriceRes, error) {
 
-	shareResult, err := u.botinfoRepo.GetSharePrice(pctx, &sharePb.SharePriceReq{
-		ShareSymbol: target,
-	})
+	result, err := u.botinfoRepo.GetSharePrice(pctx, target)
 	if err != nil {
 		return nil, err
 	}
 
-	share := new(botinfo.BotInfoSharePriceRes)
-	share = &botinfo.BotInfoSharePriceRes{
-		Name:  shareResult.Name,
-		Price: share.Price,
-	}
-
-	return share, nil
+	return result, nil
 }

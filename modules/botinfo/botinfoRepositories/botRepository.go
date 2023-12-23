@@ -12,7 +12,7 @@ import (
 
 type (
 	IBotRepositoryService interface {
-		GetSharePrice(pctx context.Context, req *sharePb.SharePriceReq) (*sharePb.SharePriceRes, error)
+		GetSharePrice(pctx context.Context, shareSymbol string) (*sharePb.SharePriceRes, error)
 	}
 
 	botrepository struct {
@@ -26,8 +26,8 @@ func NewBotRepository() IBotRepositoryService {
 	}
 }
 
-func (r *botrepository) GetSharePrice(pctx context.Context, req *sharePb.SharePriceReq) (*sharePb.SharePriceRes, error) {
-
+func (r *botrepository) GetSharePrice(pctx context.Context, shareSymbol string) (*sharePb.SharePriceRes, error) {
+	log.Println("target is ========================:", shareSymbol)
 	ctx, cancel := context.WithTimeout(pctx, time.Second*10)
 	defer cancel()
 
@@ -37,14 +37,17 @@ func (r *botrepository) GetSharePrice(pctx context.Context, req *sharePb.SharePr
 		return nil, errors.New("error: cannot connect grpc")
 	}
 
-	result, err := conn.SharePrice().SharePriceSearch(ctx, req)
+	result, err := conn.SharePrice().SharePriceSearch(ctx, &sharePb.SharePriceReq{
+		ShareSymbol: shareSymbol,
+	})
+
+	log.Println("result is :", result)
 
 	if err != nil {
 		log.Printf("Error: Grpc JustTest Failed: %v", err)
 		return nil, errors.New("error: cannot connect grpc")
 	}
 
-	log.Printf("%s Price is :%f ", result.Name, result.Price)
-
+	log.Printf("result is ====> %s", result)
 	return result, nil
 }

@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/bwmarrin/discordgo"
+	"github.com/guatom999/BadzBot/modules/botinfo/botinfoRepositories"
 	"github.com/guatom999/BadzBot/modules/botinfo/botinfoUsecases"
 	"github.com/guatom999/BadzBot/modules/botinfo/botinfohandlers"
 )
@@ -31,12 +32,12 @@ var (
 			},
 		},
 		{
-			Name:        "getfollower",
-			Description: "Get Account FollwerCount",
+			Name:        "getshareprice",
+			Description: "Get Share Price",
 			Options: []*discordgo.ApplicationCommandOption{
 				{
 					Name:        "query",
-					Description: "ig url",
+					Description: "get price of share",
 					Type:        discordgo.ApplicationCommandOptionString,
 				},
 			},
@@ -60,7 +61,8 @@ type botInfoModule struct {
 
 func (m *module) BotinfoModule() IBotinfoModule {
 
-	botinfoUsecases := botinfoUsecases.NewBotinfoUsecase()
+	botinfoRepo := botinfoRepositories.NewBotRepository()
+	botinfoUsecases := botinfoUsecases.NewBotinfoUsecase(botinfoRepo)
 	botinfoHanlder := botinfohandlers.NewBotinfoHandler(botinfoUsecases)
 
 	return &botInfoModule{
@@ -100,7 +102,8 @@ func (b *botInfoModule) Init() {
 
 	b.commandHandler["help"] = b.hanlder.Help
 	b.commandHandler["response"] = b.hanlder.Test
-	// b.commandHandler["getfollower"] = b.hanlder.GetFollower
+	b.commandHandler["getshareprice"] = b.hanlder.GetSharePrice
+	// b.commandHandler["getfollower"] = b.hanlder.
 
 }
 

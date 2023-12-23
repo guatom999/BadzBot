@@ -39,8 +39,8 @@ func (s *HttpServer) gracefulShutdown(pctx context.Context, close <-chan os.Sign
 	if resClose != nil {
 		log.Println("Shutting down server")
 
-		ctx, cancel := context.WithTimeout(pctx, time.Second*10)
-		defer cancel()
+		ctx, _ := context.WithTimeout(pctx, time.Second*10)
+		// defer cancel()
 
 		if err := s.app.Shutdown(ctx); err != nil {
 			log.Fatalf("Failed to shutdown:%v", err)

@@ -25,14 +25,14 @@ func main() {
 
 	db := database.DbConnect(ctx, &cfg)
 
-	defer db.Disconnect(ctx)
-
 	switch cfg.App.Name {
 	case "discord":
 		server.NewDiscordServer(&cfg).Start()
 	case "normal":
 		server.NewHttpServer(db, &cfg).Start(ctx)
 	}
+
+	defer db.Disconnect(ctx)
 
 	log.Println(db)
 

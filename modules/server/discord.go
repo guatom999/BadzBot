@@ -75,6 +75,9 @@ func (s *discordServer) Start() {
 		}
 	})
 
+	// event := botEvents.CreateAmazingEvent(s.dg)
+	// botEvents.TransformEventToExternalEvent(s.dg, event)
+
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt)
 	log.Println("Press Ctrl+C to exit")

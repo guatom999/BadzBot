@@ -13,6 +13,7 @@ import (
 
 type ISharePriceRepository interface {
 	Test() (string, error)
+	SharePrice(pctx context.Context, shareSymbol string) (*sharePb.SharePriceRes, error)
 }
 
 type sharePriceRepository struct {
@@ -42,4 +43,26 @@ func (r *sharePriceRepository) Test() (string, error) {
 
 	log.Printf("result is ====> %s", result.Message)
 	return result.Message, nil
+}
+
+func (r *sharePriceRepository) SharePrice(pctx context.Context, shareSymbol string) (*sharePb.SharePriceRes, error) {
+	ctx, cancel := context.WithTimeout(pctx, time.Second*10)
+	defer cancel()
+
+	conn, err := grpcconn.NewGrpcClient("0.0.0.0:1425")
+	if err != nil {
+		log.Printf("Error: failed to connect Grpc : %v", err)
+		return nil, errors.New("error: cannot connect grpc")
+	}
+
+	result, err := conn.SharePrice().SharePriceSearch(ctx, &sharePb.SharePriceReq{
+		ShareSymbol: shareSymbol,
+	})
+	if err != nil {
+		log.Printf("Error: Grpc JustTest Failed: %v", err)
+		return nil, errors.New("error: cannot connect grpc")
+	}
+
+	log.Printf("result is ====> %s", result)
+	return result, nil
 }
