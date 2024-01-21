@@ -39,12 +39,12 @@ vendor
 apikey.txt
 *.txt
 
-.git
-.gitignore
-LICENSE
-README.md
-.air*
-*_test.go
-/sometest
-/screenshots
-/build
+# .git
+# .gitignore
+# LICENSE
+# README.md
+# .air*
+# *_test.go
+# /sometest
+# /screenshots
+# /build
